@@ -4,6 +4,7 @@ function PlanetFilter({ nameFilter: { nameFilter, setNameFilter } }) {
   return (
     <div>
       <input
+        data-testid="name-filter"
         type="text"
         placeholder="Filtrar planetas"
         value={ nameFilter }
