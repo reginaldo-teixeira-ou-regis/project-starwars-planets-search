@@ -1,15 +1,18 @@
+import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
 import TableContext from '../context/TableContext';
 
-function Table() {
+function Table({ filter }) {
   const { dataPlanets, isLoading } = useContext(TableContext);
 
   if (isLoading || !dataPlanets.results.length) {
     return <h3>Carregando...</h3>;
   }
 
-  console.log(dataPlanets);
   const planets = Object.keys(dataPlanets.results[0]);
+
+  const planetFilter = dataPlanets.results
+    .filter((planet) => planet.name.toLowerCase().includes(filter.toLowerCase()));
 
   return (
     <div>
@@ -22,7 +25,7 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          {dataPlanets.results.map((row) => (
+          {planetFilter.map((row) => (
             <tr key={ row.name }>
               {Object.values(row)
                 .map((row1) => <td key={ row1 }>{row1}</td>)}
@@ -33,5 +36,9 @@ function Table() {
     </div>
   );
 }
+
+Table.propTypes = {
+  filter: PropTypes.string.isRequired,
+};
 
 export default Table;
