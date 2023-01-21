@@ -6,11 +6,27 @@ import TableProvider from './context/TableProvider';
 
 function App() {
   const [nameFilter, setNameFilter] = useState('');
+  const [column, setColumn] = useState('population');
+  const [operator, setOperator] = useState('maior que');
+  const [value, setValue] = useState('0');
+  const [button, setButton] = useState({});
 
   return (
     <TableProvider>
-      <PlanetFilter nameFilter={ { nameFilter, setNameFilter } } />
-      <Table filter={ nameFilter } />
+      <PlanetFilter
+        nameFilter={ {
+          nameFilter,
+          setNameFilter,
+          column,
+          setColumn,
+          operator,
+          setOperator,
+          value,
+          setValue,
+          setButton,
+        } }
+      />
+      <Table filter={ nameFilter } button={ button } />
     </TableProvider>
   );
 }
