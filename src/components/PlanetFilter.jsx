@@ -71,6 +71,7 @@ function PlanetFilter() {
           <button
             type="button"
             id={ index }
+            onClick={ () => { } }
           >
             Excluir
           </button>
