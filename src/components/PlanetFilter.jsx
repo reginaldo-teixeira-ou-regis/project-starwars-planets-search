@@ -1,23 +1,19 @@
-import PropTypes from 'prop-types';
+import { useContext } from 'react';
+import { FilterContext } from '../context/FilterProvider';
 
-function PlanetFilter({ nameFilter: {
-  nameFilter,
-  setNameFilter,
-  column,
-  setColumn,
-  operator,
-  setOperator,
-  value,
-  setValue,
-  setButton } }) {
+function PlanetFilter() {
+  const { planetsFilter, setPlanetsFilter, columnFilter, setColumnFilter,
+    operatorFilter, setOperatorFilter, valueFilter, setValueFilter,
+    setButtonFilter } = useContext(FilterContext);
+
   return (
     <div>
       <input
         data-testid="name-filter"
         type="text"
         placeholder="Filtrar planetas"
-        value={ nameFilter }
-        onChange={ (e) => setNameFilter(e.target.value) }
+        value={ planetsFilter }
+        onChange={ (e) => setPlanetsFilter(e.target.value) }
       />
       <br />
       <label htmlFor="column-filter">
@@ -25,8 +21,8 @@ function PlanetFilter({ nameFilter: {
         <select
           id="column-filter"
           data-testid="column-filter"
-          value={ column }
-          onChange={ (e) => setColumn(e.target.value) }
+          value={ columnFilter }
+          onChange={ (e) => setColumnFilter(e.target.value) }
         >
           <option value="population">population</option>
           <option value="orbital_period">orbital_period</option>
@@ -40,8 +36,8 @@ function PlanetFilter({ nameFilter: {
         <select
           id="comparison-filter"
           data-testid="comparison-filter"
-          value={ operator }
-          onChange={ (e) => setOperator(e.target.value) }
+          value={ operatorFilter }
+          onChange={ (e) => setOperatorFilter(e.target.value) }
         >
           <option value="maior que">maior que</option>
           <option value="menor que">menor que</option>
@@ -53,22 +49,20 @@ function PlanetFilter({ nameFilter: {
           type="number"
           id="value-filter"
           data-testid="value-filter"
-          value={ value }
-          onChange={ (e) => setValue(e.target.value) }
+          value={ valueFilter }
+          onChange={ (e) => setValueFilter(e.target.value) }
         />
       </label>
       <button
         data-testid="button-filter"
-        onClick={ () => { setButton({ column, operator, value }); } }
+        onClick={ () => {
+          setButtonFilter({ columnFilter, operatorFilter, valueFilter });
+        } }
       >
         FILTRAR
       </button>
     </div>
   );
 }
-
-PlanetFilter.propTypes = {
-  nameFilter: PropTypes.shape().isRequired,
-};
 
 export default PlanetFilter;

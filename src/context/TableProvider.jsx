@@ -1,7 +1,8 @@
 import PropTypes, { shape } from 'prop-types';
-import { useEffect, useMemo, useState } from 'react';
+import { createContext, useEffect, useMemo, useState } from 'react';
 import useFetch from '../hooks/useFetch';
-import TableContext from './TableContext';
+
+export const TableContext = createContext({ });
 
 function TableProvider({ children }) {
   const { errors, isLoading, makeFetch } = useFetch();
@@ -12,7 +13,7 @@ function TableProvider({ children }) {
 
     const getInfoApi = async () => {
       const requestedApi = await makeFetch(url);
-      requestedApi.results.forEach((el) => { delete el.residents; });
+      requestedApi.results.forEach((info) => { delete info.residents; });
       setDataPlanets(requestedApi);
     };
 

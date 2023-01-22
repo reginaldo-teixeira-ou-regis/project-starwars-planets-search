@@ -1,31 +1,37 @@
-import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
-import TableContext from '../context/TableContext';
+import { FilterContext } from '../context/FilterProvider';
+import { TableContext } from '../context/TableProvider';
 
-function Table({ filter, button }) {
+function Table() {
   const { dataPlanets, isLoading } = useContext(TableContext);
+  const { planetsFilter, buttonFilter } = useContext(FilterContext);
 
   if (isLoading || !dataPlanets.results.length) {
     return <h3>Carregando...</h3>;
   }
 
+  let filterData = dataPlanets.results;
+
   const planets = Object.keys(dataPlanets.results[0]);
 
-  let planetFilter = dataPlanets.results
-    .filter((planet) => planet.name.toLowerCase().includes(filter.toLowerCase()));
+  if (planetsFilter) {
+    filterData = filterData.filter((planet) => planet.name.toLowerCase()
+      .includes(planetsFilter.toLowerCase()));
+  }
 
-  if (Object.keys(button).length) {
-    console.log(typeof planetFilter[0].population, typeof button.value);
-    if (button.operator === 'maior que') {
-      planetFilter = planetFilter
-        .filter((planet) => +planet[button.column] > button.value);
-    } else if (button.operator === 'menor que') {
-      planetFilter = planetFilter
-        .filter((planet) => +planet[button.column] < button.value);
-    } else if (button.operator === 'igual a') {
-      planetFilter = planetFilter
-        .filter((planet) => planet[button.column] === button.value);
-    }
+  if (Object.keys(buttonFilter).length) {
+    filterData = filterData.filter((infoData) => {
+      if (buttonFilter.operatorFilter === 'maior que') {
+        return +infoData[buttonFilter.columnFilter] > +buttonFilter.valueFilter;
+      }
+      if (buttonFilter.operatorFilter === 'menor que') {
+        return +infoData[buttonFilter.columnFilter] < +buttonFilter.valueFilter;
+      }
+      if (buttonFilter.operatorFilter === 'igual a') {
+        return +infoData[buttonFilter.columnFilter] === +buttonFilter.valueFilter;
+      }
+      return infoData;
+    });
   }
 
   return (
@@ -33,16 +39,16 @@ function Table({ filter, button }) {
       <table>
         <thead>
           <tr>
-            {planets.map((row) => (
-              <th key={ row }>{row}</th>
+            {planets.map((planet) => (
+              <th key={ planet }>{planet}</th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {planetFilter.map((row) => (
-            <tr key={ row.name }>
-              {Object.values(row)
-                .map((row1) => <td key={ row1 }>{row1}</td>)}
+          {filterData.map((dataInfo) => (
+            <tr key={ dataInfo.name }>
+              {Object.values(dataInfo)
+                .map((valueInfo) => <td key={ valueInfo }>{valueInfo}</td>)}
             </tr>
           ))}
         </tbody>
@@ -50,14 +56,5 @@ function Table({ filter, button }) {
     </div>
   );
 }
-
-Table.propTypes = {
-  button: PropTypes.shape({
-    column: PropTypes.string,
-    operator: PropTypes.string,
-    value: PropTypes.string,
-  }).isRequired,
-  filter: PropTypes.string.isRequired,
-};
 
 export default Table;
