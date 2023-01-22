@@ -4,13 +4,13 @@ import { TableContext } from '../context/TableProvider';
 
 function Table() {
   const { dataPlanets, isLoading } = useContext(TableContext);
-  const { planetsFilter, buttonFilter } = useContext(FilterContext);
+  const { planetsFilter, newState } = useContext(FilterContext);
 
-  if (isLoading || !dataPlanets.results.length) {
+  if (isLoading || !dataPlanets.results.length || !newState) {
     return <h3>Carregando...</h3>;
   }
 
-  let filterData = dataPlanets.results;
+  let filterData = newState;
 
   const planets = Object.keys(dataPlanets.results[0]);
 
@@ -18,34 +18,6 @@ function Table() {
     filterData = filterData.filter((planet) => planet.name.toLowerCase()
       .includes(planetsFilter.toLowerCase()));
   }
-
-  if (Object.keys(buttonFilter).length) {
-    filterData = filterData.filter((infoData) => {
-      if (buttonFilter.operatorFilter === 'maior que') {
-        return +infoData[buttonFilter.columnFilter] > +buttonFilter.valueFilter;
-      }
-      if (buttonFilter.operatorFilter === 'menor que') {
-        return +infoData[buttonFilter.columnFilter] < +buttonFilter.valueFilter;
-      }
-      if (buttonFilter.operatorFilter === 'igual a') {
-        return +infoData[buttonFilter.columnFilter] === +buttonFilter.valueFilter;
-      }
-      return infoData;
-    });
-  }
-
-  /* if (Object.keys(buttonFilter).length) {
-    if (buttonFilter.operatorFilter === 'maior que') {
-      filterData = filterData.filter((planet) => +planet[buttonFilter.columnFilter]
-      > buttonFilter.valueFilter);
-    } else if (buttonFilter.operatorFilter === 'menor que') {
-      filterData = filterData.filter((planet) => +planet[buttonFilter.columnFilter]
-        < buttonFilter.valueFilter);
-    } else if (buttonFilter.operatorFilter === 'igual a') {
-      filterData = filterData.filter((planet) => planet[buttonFilter.columnFilter]
-        === buttonFilter.valueFilter);
-    }
-  } */
 
   return (
     <div>
