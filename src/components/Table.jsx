@@ -34,6 +34,19 @@ function Table() {
     });
   }
 
+  /* if (Object.keys(buttonFilter).length) {
+    if (buttonFilter.operatorFilter === 'maior que') {
+      filterData = filterData.filter((planet) => +planet[buttonFilter.columnFilter]
+      > buttonFilter.valueFilter);
+    } else if (buttonFilter.operatorFilter === 'menor que') {
+      filterData = filterData.filter((planet) => +planet[buttonFilter.columnFilter]
+        < buttonFilter.valueFilter);
+    } else if (buttonFilter.operatorFilter === 'igual a') {
+      filterData = filterData.filter((planet) => planet[buttonFilter.columnFilter]
+        === buttonFilter.valueFilter);
+    }
+  } */
+
   return (
     <div>
       <table>

@@ -4,7 +4,7 @@ import { FilterContext } from '../context/FilterProvider';
 function PlanetFilter() {
   const { planetsFilter, setPlanetsFilter, columnFilter, setColumnFilter,
     operatorFilter, setOperatorFilter, valueFilter, setValueFilter,
-    setButtonFilter } = useContext(FilterContext);
+    setButtonFilter, multipleFilters, setMultipleFilters } = useContext(FilterContext);
 
   return (
     <div>
@@ -56,11 +56,25 @@ function PlanetFilter() {
       <button
         data-testid="button-filter"
         onClick={ () => {
-          setButtonFilter({ columnFilter, operatorFilter, valueFilter });
+          setButtonFilter(
+            { columnFilter, operatorFilter, valueFilter },
+            setMultipleFilters([...multipleFilters,
+              `${columnFilter} ${operatorFilter} ${valueFilter}`]),
+          );
         } }
       >
         FILTRAR
       </button>
+      {[...new Set(multipleFilters)].map((filter, index) => (
+        <p key={ filter + index }>
+          {filter}
+          <button
+            type="button"
+            id={ index }
+          >
+            Excluir
+          </button>
+        </p>))}
     </div>
   );
 }

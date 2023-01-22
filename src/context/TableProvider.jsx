@@ -1,4 +1,4 @@
-import PropTypes, { shape } from 'prop-types';
+import PropTypes from 'prop-types';
 import { createContext, useEffect, useMemo, useState } from 'react';
 import useFetch from '../hooks/useFetch';
 
@@ -37,7 +37,7 @@ function TableProvider({ children }) {
 }
 
 TableProvider.propTypes = {
-  children: PropTypes.arrayOf(shape()).isRequired,
+  children: PropTypes.shape().isRequired,
 };
 
 export default TableProvider;

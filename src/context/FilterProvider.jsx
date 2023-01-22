@@ -9,6 +9,7 @@ function FilterProvider({ children }) {
   const [operatorFilter, setOperatorFilter] = useState('maior que');
   const [valueFilter, setValueFilter] = useState('0');
   const [buttonFilter, setButtonFilter] = useState({});
+  const [multipleFilters, setMultipleFilters] = useState([]);
 
   const values = useMemo(() => ({
     planetsFilter,
@@ -21,7 +22,10 @@ function FilterProvider({ children }) {
     setValueFilter,
     buttonFilter,
     setButtonFilter,
-  }), [planetsFilter, columnFilter, operatorFilter, valueFilter, buttonFilter]);
+    multipleFilters,
+    setMultipleFilters,
+  }), [planetsFilter, columnFilter, operatorFilter,
+    valueFilter, buttonFilter, multipleFilters]);
 
   return (
     <FilterContext.Provider value={ values }>
@@ -31,7 +35,7 @@ function FilterProvider({ children }) {
 }
 
 FilterProvider.propTypes = {
-  children: PropTypes.shape().isRequired,
+  children: PropTypes.arrayOf(PropTypes.shape()).isRequired,
 };
 
 export default FilterProvider;
