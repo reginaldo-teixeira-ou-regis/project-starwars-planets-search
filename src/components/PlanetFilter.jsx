@@ -1,15 +1,37 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { FilterContext } from '../context/FilterProvider';
 
 function PlanetFilter() {
   const { planetsFilter, setPlanetsFilter, columnFilter, setColumnFilter,
     operatorFilter, setOperatorFilter, valueFilter, setValueFilter,
     multipleFilters, setMultipleFilters, inputsFilter } = useContext(FilterContext);
+  const [options, setOptions] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
+
+  useEffect(() => {
+    const filterUseEffect = () => {
+      setColumnFilter(options[0]);
+    };
+    filterUseEffect();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [options]);
+
+  const removeFilterColumn = (value) => {
+    const newOptions = options.filter((option) => option !== value);
+    setOptions(newOptions);
+  };
 
   const handleClick = () => {
     setMultipleFilters([...multipleFilters,
       `${columnFilter} ${operatorFilter} ${valueFilter}`]);
     inputsFilter();
+    removeFilterColumn(columnFilter);
+    console.log(columnFilter);
   };
 
   return (
@@ -30,11 +52,16 @@ function PlanetFilter() {
           value={ columnFilter }
           onChange={ (e) => setColumnFilter(e.target.value) }
         >
-          <option value="population">population</option>
+          {options.map((option, index) => (
+            <option key={ option + index } value={ option }>
+              {option}
+            </option>
+          ))}
+          {/* <option value="population">population</option>
           <option value="orbital_period">orbital_period</option>
           <option value="diameter">diameter</option>
           <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          <option value="surface_water">surface_water</option> */}
         </select>
       </label>
       <label htmlFor="comparison-filter">
