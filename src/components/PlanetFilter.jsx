@@ -34,6 +34,14 @@ function PlanetFilter() {
     console.log(columnFilter);
   };
 
+  const removeAllFilters = () => {
+    'oi';
+  };
+
+  const removeFilter = () => {
+    'oi';
+  };
+
   return (
     <div>
       <input
@@ -57,11 +65,6 @@ function PlanetFilter() {
               {option}
             </option>
           ))}
-          {/* <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option> */}
         </select>
       </label>
       <label htmlFor="comparison-filter">
@@ -93,16 +96,22 @@ function PlanetFilter() {
         FILTRAR
       </button>
       {[...new Set(multipleFilters)].map((filter, index) => (
-        <p key={ filter + index }>
+        <p key={ filter + index } data-testid="filter">
           {filter}
           <button
             type="button"
             id={ index }
-            onClick={ () => { } }
+            onClick={ removeFilter }
           >
-            Excluir
+            x
           </button>
         </p>))}
+      <button
+        data-testid="button-remove-filters"
+        onClick={ removeAllFilters }
+      >
+        REMOVER TODOS OS FILTROS
+      </button>
     </div>
   );
 }

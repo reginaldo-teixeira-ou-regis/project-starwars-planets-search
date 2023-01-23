@@ -10,7 +10,6 @@ function FilterProvider({ children }) {
   const [columnFilter, setColumnFilter] = useState('population');
   const [operatorFilter, setOperatorFilter] = useState('maior que');
   const [valueFilter, setValueFilter] = useState('0');
-  const [buttonFilter, setButtonFilter] = useState({});
   const [multipleFilters, setMultipleFilters] = useState([]);
   const [newState, setNewState] = useState([]);
 
@@ -46,8 +45,6 @@ function FilterProvider({ children }) {
     setOperatorFilter,
     valueFilter,
     setValueFilter,
-    buttonFilter,
-    setButtonFilter,
     multipleFilters,
     setMultipleFilters,
     inputsFilter,
@@ -55,7 +52,7 @@ function FilterProvider({ children }) {
     setNewState,
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }), [planetsFilter, columnFilter, operatorFilter,
-    valueFilter, buttonFilter, multipleFilters, newState]);
+    valueFilter, multipleFilters, newState]);
 
   return (
     <FilterContext.Provider value={ values }>
