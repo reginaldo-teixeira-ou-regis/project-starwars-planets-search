@@ -13,17 +13,17 @@ function SortColumns() {
     setData(dataPlanets.results);
   }, [dataPlanets.results]);
 
-  const handleColumnChange = (event) => {
-    setColumn(event.target.value);
+  const handleColumnChange = (e) => {
+    setColumn(e.target.value);
   };
 
-  const handleOrderChange = (event) => {
-    setOrder(event.target.value);
+  const handleOrderChange = (e) => {
+    setOrder(e.target.value);
   };
 
-  const handleSubmit = (event, col, ord) => {
-    event.preventDefault();
-    const aiai = data.reduce((acc, curr) => {
+  const handleSubmit = (e, col, ord) => {
+    e.preventDefault();
+    const orderReduceSort = data.reduce((acc, curr) => {
       if (curr[col] === 'unknown') {
         acc.push(curr);
       } else {
@@ -32,14 +32,14 @@ function SortColumns() {
       }
       return acc;
     }, []);
-    const filtered = ord === 'ASC' ? aiai.sort((a, b) => a[col] - b[col])
-      : aiai.sort((a, b) => b[col] - a[col]);
+    const filtered = ord === 'ASC' ? orderReduceSort.sort((a, b) => a[col] - b[col])
+      : orderReduceSort.sort((a, b) => b[col] - a[col]);
     setNewState(filtered);
   };
 
   return (
     <div>
-      <form onSubmit={ (event) => { handleSubmit(event, column, order); } }>
+      <form onSubmit={ (e) => { handleSubmit(e, column, order); } }>
         <label htmlFor="column-sort">
           Ordenar:
           <select

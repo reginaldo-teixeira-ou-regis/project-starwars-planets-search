@@ -51,28 +51,28 @@ function PlanetFilter() {
 
   const removeFilter = (filter) => {
     const [column] = splited(filter);
-    const rrr = multipleFilters.filter((state) => !state.includes(column));
-    setMultipleFilters(rrr);
+    const multiFilters = multipleFilters.filter((state) => !state.includes(column));
+    setMultipleFilters(multiFilters);
     setOptions([...options, column]);
     const newFilterState = dataPlanets.results.filter((infoData) => {
-      let lll = true;
-      rrr.forEach((element) => {
-        const [columnF, operatorF,, valueF] = splited(element);
-        if (operatorF === 'maior') {
-          lll = +infoData[columnF] > +valueF;
+      let columnValue = true;
+      multiFilters.forEach((element) => {
+        const [columnFilt, operatorFilt,, valueFilt] = splited(element);
+        if (operatorFilt === 'maior') {
+          columnValue = +infoData[columnFilt] > +valueFilt;
           return;
         }
-        if (operatorF === 'menor') {
-          lll = +infoData[columnF] < +valueF;
+        if (operatorFilt === 'menor') {
+          columnValue = +infoData[columnFilt] < +valueFilt;
           return;
         }
-        if (operatorF === 'igual') {
-          lll = +infoData[columnF] === +valueF;
+        if (operatorFilt === 'igual') {
+          columnValue = +infoData[columnFilt] === +valueFilt;
           return;
         }
-        lll = true;
+        columnValue = true;
       });
-      return lll;
+      return columnValue;
     });
     setNewState(newFilterState);
   };

@@ -7,13 +7,16 @@ import TableProvider from './context/TableProvider';
 
 function App() {
   return (
-    <TableProvider>
-      <FilterProvider>
-        <PlanetFilter />
-        <SortColumns />
-        <Table />
-      </FilterProvider>
-    </TableProvider>
+    <>
+      <h1>Project StarWars Planets Search</h1>
+      <TableProvider>
+        <FilterProvider>
+          <PlanetFilter />
+          <SortColumns />
+          <Table />
+        </FilterProvider>
+      </TableProvider>
+    </>
   );
 }
 
