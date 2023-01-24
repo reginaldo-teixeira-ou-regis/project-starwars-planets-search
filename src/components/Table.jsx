@@ -33,7 +33,19 @@ function Table() {
           {filterData.map((dataInfo) => (
             <tr key={ dataInfo.name }>
               {Object.values(dataInfo)
-                .map((valueInfo) => <td key={ valueInfo }>{valueInfo}</td>)}
+                .map((valueInfo) => {
+                  if (valueInfo === dataInfo.name) {
+                    return (
+                      <td
+                        key={ valueInfo }
+                        data-testid="planet-name"
+                      >
+                        {valueInfo}
+                      </td>
+                    );
+                  }
+                  return <td key={ valueInfo }>{valueInfo}</td>;
+                })}
             </tr>
           ))}
         </tbody>
