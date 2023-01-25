@@ -1,87 +1,102 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import App from '../App';
 import mockData from './helpers/mockData';
 import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
-import TableProvider from '../context/TableProvider';
-import FilterProvider from '../context/FilterProvider';
-// import PlanetFilter from '../components/PlanetFilter';
-// import SortColumns from '../components/SortColumns';
-// import Table from '../components/Table';
+import mockFetch from '../../cypress/mocks/fetch';
 
 afterEach(() => jest.clearAllMocks());
 
 describe('Testing the component App', () => {
   beforeEach(() => {
     jest.spyOn(global, 'fetch');
-    global.fetch.mockResolvedValue({
-      json: jest.fn().mockResolvedValue(mockData),
-    });
-    // render(<App />)
-    act(async () => render(
-    <TableProvider>
-      <FilterProvider>
-        <App />
-      </FilterProvider>
-    </TableProvider>,
-    ));
+    global.fetch = mockFetch;
   });
 
   it('Testing if the title pops up in App', () => {
-    const title = screen.queryByRole('heading', { name: /project starwars planets search/i })
-    expect(title).toBeDefined();
+    render(<App />);
+    const title = screen.getByRole('heading', { name: /project starwars planets search/i })
+    expect(title).toBeInTheDocument();
   });
 
-  it("Testing if the field of search it's working normally", async () => {
-    const inputNamePlanet = screen.queryByPlaceholderText(/filtar planetas/i)
-    expect(inputNamePlanet).toBeDefined();
+  it("Testing if the table it's rendering normally", async () => {
+    render(<App />);
 
-    const planetTatooine = screen.queryByRole('cell', { name: /tatooine/i })
-    expect(planetTatooine).toBeDefined();
+    await waitFor(() => { expect(screen.getByTestId('name-filter')).toBeInTheDocument(); }, { timeout: 15000 });
+    const tablePlanetsInfo = await screen.findByRole('table');
+    expect(tablePlanetsInfo).toBeInTheDocument();
+  });
+
+  it("Testing if when typing 'na' in input renders the planet 'Naboo'", async () => {
+    render(<App />);
+
+    const inputNamePlanet = await screen.findByTestId('name-filter')
+    expect(inputNamePlanet).toBeInTheDocument();
 
     userEvent.type(inputNamePlanet, 'na');
 
-    const planetNaboo = screen.findByRole('cell', {
-      name: /Naboo/i
-    });
-    expect(planetNaboo).toBeDefined();
+    const planetsID = await screen.findAllByTestId('planet-name');
+    expect(planetsID).toHaveLength(1);
+    const planetNaboo = await screen.findByRole('cell', { name: /Naboo/i });
+    expect(planetNaboo).toBeInTheDocument();
+  });
+
+  it("Testing if when typing 'oo' in input renders the planets 'Naboo' and 'tatooine'", async () => {
+    render(<App />);
+
+    const inputNamePlanet = await screen.findByTestId('name-filter')
+    expect(inputNamePlanet).toBeInTheDocument();
+
+    userEvent.type(inputNamePlanet, 'oo');
+    const planetsID = await screen.findAllByTestId('planet-name');
+    expect(planetsID).toHaveLength(2);
+    const planetTatooine = await screen.findByRole('cell', { name: /tatooine/i })
+    expect(planetTatooine).toBeInTheDocument();
+    const planetNaboo = await screen.findByRole('cell', { name: /Naboo/i });
+    expect(planetNaboo).toBeInTheDocument();
+  });
+
+  it("Testing if when typing 'etgyher' in input not renders none planet", async () => {
+    render(<App />);
+
+    const inputNamePlanet = await screen.findByTestId('name-filter')
+    expect(inputNamePlanet).toBeInTheDocument();
+
+    userEvent.type(inputNamePlanet, 'etgyher');
+    const planetsID = screen.findAllByTestId('planet-name');
+    expect(planetsID).not.toContain();
   });
 
   it("Testing if the numerics filters are it's working normally", async () => {
-    const columnFilter = screen.queryByTestId("column-filter");
-    const operatorFilter = screen.queryByTestId("comparison-filter");
-    const valueFilter = screen.queryByTestId("value-filter");
-    const buttonFilter = screen.queryByTestId("button-filter");
+    render(<App />);
 
-    expect(columnFilter).toBeDefined();
-    expect(operatorFilter).toBeDefined();
-    expect(valueFilter).toBeDefined();
-    expect(buttonFilter).toBeDefined();
+    const columnFilter = screen.getByTestId("column-filter");
+    const operatorFilter = screen.getByTestId("comparison-filter");
+    const valueFilter = screen.getByTestId("value-filter");
+    const buttonFilter = screen.getByTestId("button-filter");
 
-    /* userEvent.selectOptions(columnFilter, 'rotation_period');
+    expect(columnFilter).toBeInTheDocument();
+    expect(operatorFilter).toBeInTheDocument();
+    expect(valueFilter).toBeInTheDocument();
+    expect(buttonFilter).toBeInTheDocument();
+
+    userEvent.selectOptions(columnFilter, 'rotation_period');
     userEvent.selectOptions(operatorFilter, 'igual a');
     valueFilter.value = '';
     userEvent.type(valueFilter, '23');
     userEvent.click(buttonFilter);
 
-    expect(screen.getByRole('cell', { name: /tatooine/i })).toBeInTheDocument();
-    expect(screen.getByRole('cell', { name: /Hoth/i })).toBeInTheDocument();
-    expect(screen.getByRole('cell', { name: /Dagobah/i })).toBeInTheDocument();
-    expect(screen.queryByRole('cell', { name: /Naboo/i })).not.toBeInTheDocument(); */
+    const rotation_period_igual_a_23 = screen.getByText(/rotation_period igual a 23/i)
+    expect(rotation_period_igual_a_23).toBeInTheDocument();
+
+    expect(await screen.findByRole('cell', { name: /tatooine/i })).toBeInTheDocument();
+    expect(await screen.findByRole('cell', { name: /Hoth/i })).toBeInTheDocument();
+    expect(await screen.findByRole('cell', { name: /Dagobah/i })).toBeInTheDocument();
   });
 });
 
 // it('Testing if the title pops up in App', () => {
 // });
 
-/* await act(async () => render(
-    <TableProvider>
-      <FilterProvider>
-        <PlanetFilter />
-        <SortColumns />
-        <Table />
-      </FilterProvider>
-    </TableProvider>,
-)); */
-
 /*  44.73 | 13.79 | 37.5 | 46.15  */
+/*  58.33 | 37.93 |  52  | 58.9  */
+/*  66.02 | 37.93 |  68  | 66.43 */
