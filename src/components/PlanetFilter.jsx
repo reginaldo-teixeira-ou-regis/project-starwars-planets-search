@@ -66,11 +66,7 @@ function PlanetFilter() {
           columnValue = +infoData[columnFilt] < +valueFilt;
           return;
         }
-        if (operatorFilt === 'igual') {
-          columnValue = +infoData[columnFilt] === +valueFilt;
-          return;
-        }
-        columnValue = true;
+        columnValue = +infoData[columnFilt] === +valueFilt;
       });
       return columnValue;
     });

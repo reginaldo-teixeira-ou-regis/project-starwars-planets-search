@@ -189,98 +189,93 @@ describe('Testing the component App', () => {
     const valueFilter = await screen.findByTestId("value-filter");
     const buttonFilter = await screen.findByTestId("button-filter");
 
-    userEvent.selectOptions(columnFilter, 'rotation_period');
+    userEvent.selectOptions(columnFilter, 'population');
     userEvent.selectOptions(operatorFilter, 'maior que');
     valueFilter.value = '';
-    userEvent.type(valueFilter, '13');
+    userEvent.type(valueFilter, '500');
     fireEvent.click(buttonFilter);
-    const rotation_period_maior_que_13 = screen.getByText(/rotation_period maior que 13/i)
-    expect(rotation_period_maior_que_13).toBeInTheDocument();
+    const population_maior_que_500 = screen.getByText(/population maior que 500/i)
+    expect(population_maior_que_500).toBeInTheDocument();
+
+    userEvent.selectOptions(columnFilter, 'diameter');
+    userEvent.selectOptions(operatorFilter, 'menor que');
+    valueFilter.value = '';
+    userEvent.type(valueFilter, '20000');
+    fireEvent.click(buttonFilter);
+    const diameter_menor_que_20000 = screen.getByText(/diameter menor que 20000/i)
+    expect(diameter_menor_que_20000).toBeInTheDocument();
+
+    userEvent.selectOptions(columnFilter, 'orbital_period');
+    userEvent.selectOptions(operatorFilter, 'maior que');
+    valueFilter.value = '';
+    userEvent.type(valueFilter, '350');
+    fireEvent.click(buttonFilter);
+    const orbital_period_maior_que_350 = screen.getByText(/orbital_period maior que 350/i)
+    expect(orbital_period_maior_que_350).toBeInTheDocument();
+
+    userEvent.selectOptions(columnFilter, 'rotation_period');
+    userEvent.selectOptions(operatorFilter, 'igual a');
+    valueFilter.value = '';
+    userEvent.type(valueFilter, '24');
+    fireEvent.click(buttonFilter);
+    const rotation_period_igual_a_24 = screen.getByText(/rotation_period igual a 24/i)
+    expect(rotation_period_igual_a_24).toBeInTheDocument();
 
     userEvent.selectOptions(columnFilter, 'surface_water');
     userEvent.selectOptions(operatorFilter, 'menor que');
     valueFilter.value = '';
-    userEvent.type(valueFilter, '50');
+    userEvent.type(valueFilter, '10');
     fireEvent.click(buttonFilter);
-    const surface_water_menor_que_50 = screen.getByText(/surface_water menor que 50/i)
-    expect(surface_water_menor_que_50).toBeInTheDocument();
+    const surface_water_menor_que_10 = screen.getByText(/surface_water menor que 10/i)
+    expect(surface_water_menor_que_10).toBeInTheDocument();
 
-    userEvent.selectOptions(columnFilter, 'orbital_period');
-    userEvent.selectOptions(operatorFilter, 'menor que');
-    valueFilter.value = '';
-    userEvent.type(valueFilter, '500');
-    fireEvent.click(buttonFilter);
-    const orbital_period_menor_que_500 = screen.getByText(/orbital_period menor que 500/i)
-    expect(orbital_period_menor_que_500).toBeInTheDocument();
+    expect(await screen.findByRole('cell', { name: /Yavin IV/i })).toBeInTheDocument();
 
-    userEvent.selectOptions(columnFilter, 'population');
-    userEvent.selectOptions(operatorFilter, 'maior que');
-    valueFilter.value = '';
-    userEvent.type(valueFilter, '30000000');
-    fireEvent.click(buttonFilter);
-    const population_maior_que_30000000 = screen.getByText(/population maior que 30000000/i)
-    expect(population_maior_que_30000000).toBeInTheDocument();
-
-    userEvent.selectOptions(columnFilter, 'diameter');
-    userEvent.selectOptions(operatorFilter, 'igual a');
-    valueFilter.value = '';
-    userEvent.type(valueFilter, '12500');
-    fireEvent.click(buttonFilter);
-    const diameter_igual_a_12500 = screen.getByText(/diameter igual a 12500/i)
-    expect(diameter_igual_a_12500).toBeInTheDocument();
-
-    expect(await screen.findByRole('cell', { name: /Alderaan/i })).toBeInTheDocument();
-
-    const buttonX1 = await screen.findByTestId("rotation_period maior que 130");
+    const buttonX1 = await screen.findByTestId("population maior que 5000");
     expect(buttonX1).toBeInTheDocument();
 
-    const buttonX2 = await screen.findByTestId("surface_water menor que 501");
+    const buttonX2 = await screen.findByTestId("diameter menor que 200001");
     expect(buttonX2).toBeInTheDocument();
 
-    const buttonX3 = await screen.findByTestId("orbital_period menor que 5002");
+    const buttonX3 = await screen.findByTestId("orbital_period maior que 3502");
     expect(buttonX3).toBeInTheDocument();
 
-    const buttonX4 = await screen.findByTestId("population maior que 300000003");
+    const buttonX4 = await screen.findByTestId("rotation_period igual a 243");
     expect(buttonX4).toBeInTheDocument();
 
-    const buttonX5 = await screen.findByTestId("diameter igual a 125004");
+    const buttonX5 = await screen.findByTestId("surface_water menor que 104");
     expect(buttonX5).toBeInTheDocument();
 
     fireEvent.click(buttonX5);
     expect(buttonX5).not.toBeInTheDocument();
-    expect(diameter_igual_a_12500).not.toBeInTheDocument();
-    expect(rotation_period_maior_que_13).toBeInTheDocument();
-    expect(surface_water_menor_que_50).toBeInTheDocument();
-    expect(orbital_period_menor_que_500).toBeInTheDocument();
-    expect(population_maior_que_30000000).toBeInTheDocument();
+    expect(surface_water_menor_que_10).not.toBeInTheDocument();
+    expect(rotation_period_igual_a_24).toBeInTheDocument();
+    expect(orbital_period_maior_que_350).toBeInTheDocument();
+    expect(diameter_menor_que_20000).toBeInTheDocument();
+    expect(population_maior_que_500).toBeInTheDocument();
 
     fireEvent.click(buttonX4);
     expect(buttonX4).not.toBeInTheDocument();
-    expect(population_maior_que_30000000).not.toBeInTheDocument();
-    expect(rotation_period_maior_que_13).toBeInTheDocument();
-    expect(surface_water_menor_que_50).toBeInTheDocument();
-    expect(orbital_period_menor_que_500).toBeInTheDocument();
+    expect(rotation_period_igual_a_24).not.toBeInTheDocument();
+    expect(orbital_period_maior_que_350).toBeInTheDocument();
+    expect(diameter_menor_que_20000).toBeInTheDocument();
+    expect(population_maior_que_500).toBeInTheDocument();
 
     fireEvent.click(buttonX3);
     expect(buttonX3).not.toBeInTheDocument();
-    expect(orbital_period_menor_que_500).not.toBeInTheDocument();
-    expect(rotation_period_maior_que_13).toBeInTheDocument();
-    expect(surface_water_menor_que_50).toBeInTheDocument();
+    expect(orbital_period_maior_que_350).not.toBeInTheDocument();
+    expect(diameter_menor_que_20000).toBeInTheDocument();
+    expect(population_maior_que_500).toBeInTheDocument();
 
     fireEvent.click(buttonX2);
     expect(buttonX2).not.toBeInTheDocument();
-    expect(surface_water_menor_que_50).not.toBeInTheDocument();
-    expect(rotation_period_maior_que_13).toBeInTheDocument();
+    expect(diameter_menor_que_20000).not.toBeInTheDocument();
+    expect(population_maior_que_500).toBeInTheDocument();
 
     fireEvent.click(buttonX1);
     expect(buttonX1).not.toBeInTheDocument();
-    expect(rotation_period_maior_que_13).not.toBeInTheDocument();
+    expect(population_maior_que_500).not.toBeInTheDocument();
   });
-
-  /* it('Testing if', async () => {
-    render(<App />);
-
-  }); */
 });
 
 describe('Testing the errors', () => {
@@ -298,5 +293,3 @@ describe('Testing the errors', () => {
     });
   });
 });
-
-// 97.31 | 88 | 100 | 97.12

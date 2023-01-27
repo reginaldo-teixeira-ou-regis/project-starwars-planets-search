@@ -26,7 +26,9 @@ function TableProvider({ children }) {
   }), [isLoading, errors, dataPlanets]);
 
   if (errors) {
-    return (<h1>{`Ops, algo de errado não está certo ${errors}`}</h1>);
+    return (
+      <h1>{`Ops, algo de errado não está certo ${errors}`}</h1>
+    );
   }
 
   return (
