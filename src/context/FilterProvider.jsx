@@ -28,10 +28,7 @@ function FilterProvider({ children }) {
       if (operatorFilter === 'menor que') {
         return +infoData[columnFilter] < +valueFilter;
       }
-      if (operatorFilter === 'igual a') {
-        return +infoData[columnFilter] === +valueFilter;
-      }
-      return infoData;
+      return +infoData[columnFilter] === +valueFilter;
     });
     setNewState(newFilterState);
   };

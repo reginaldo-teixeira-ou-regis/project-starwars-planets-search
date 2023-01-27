@@ -10,14 +10,6 @@ function useFetch() {
 
       const response = await fetch(url);
 
-      if (!response.ok) {
-        const apiError = new Error(
-          `A resposta da url ${url} veio com o status ${response.status}`,
-        );
-        apiError.response = response;
-        throw apiError;
-      }
-
       const json = await response.json();
       return json;
     } catch (error) {

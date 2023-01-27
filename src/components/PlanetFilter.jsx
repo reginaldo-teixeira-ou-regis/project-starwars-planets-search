@@ -136,6 +136,7 @@ function PlanetFilter() {
           <button
             type="button"
             id={ index }
+            data-testid={ filter + index }
             onClick={ () => removeFilter(filter) }
           >
             x
