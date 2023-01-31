@@ -277,9 +277,7 @@ describe('Testing the component App', () => {
     expect(buttonX1).not.toBeInTheDocument();
     expect(population_maior_que_500).not.toBeInTheDocument();
   });
-});
 
-describe('Testing the errors', () => {
   it('Testing the message of error', async () => {
     jest.spyOn(global, 'fetch').mockRejectedValue(new Error('Failed to fetch'));
 
@@ -291,3 +289,5 @@ describe('Testing the errors', () => {
     });
   });
 });
+
+
