@@ -13,8 +13,12 @@ function TableProvider({ children }) {
 
     const getInfoApi = async () => {
       const requestedApi = await makeFetch(url);
-      requestedApi.results.forEach((info) => { delete info.residents; });
-      setDataPlanets(requestedApi);
+      if (requestedApi && requestedApi.results) {
+        requestedApi.results.forEach((info) => { delete info.residents; });
+        setDataPlanets(requestedApi);
+      } else {
+        console.error('requestedApi is undefined or does not have a results property');
+      }
     };
 
     getInfoApi();

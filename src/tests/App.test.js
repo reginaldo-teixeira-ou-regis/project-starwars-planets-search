@@ -3,6 +3,7 @@ import App from '../App';
 import userEvent from '@testing-library/user-event';
 import mockFetch from '../../cypress/mocks/fetch';
 import TableProvider from '../context/TableProvider';
+import { act } from 'react-dom/test-utils';
 
 describe('Testing the component App', () => {
   afterEach(() => jest.clearAllMocks());
@@ -282,14 +283,11 @@ describe('Testing the errors', () => {
   it('Testing the message of error', async () => {
     jest.spyOn(global, 'fetch').mockRejectedValue(new Error('Failed to fetch'));
 
-    const { getByText } = render(
-        <TableProvider>
-            <h1>Child Component</h1>
-        </TableProvider>
-    );
+    const { getByText } = render(<App />);
 
     await waitFor(() => {
-        expect(getByText('Ops, algo de errado não está certo Failed to fetch')).toBeInTheDocument();
+      const errorMessage = getByText(/Ops, algo de errado não está certo Error: Failed to fetch/);
+      expect(errorMessage).toBeInTheDocument();
     });
   });
 });
